@@ -38,7 +38,7 @@
 <body>
     <div class="container mt-5">
         <h1 class="mb-4"><b>Superwave Artillery</b></h1>
-        <form id="email_form" action="/submit" method="post" enctype="multipart/form-data">
+        <form id="email_form" action="/" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="sender_address">Sender Address</label>
                 <input type="email" id="sender_address" name="sender_address" class="form-control" placeholder="Enter your sender MailFrom address" oninput="localStorage.setItem('sender_address', this.value);" required> 
@@ -49,7 +49,7 @@
             </div>
             <div class="form-group">
                 <label for="html_file">HTML File Upload</label>
-                <input type="file" id="html_file" name="html_file" class="form-control-file" required>
+                <input type="file" id="html_file" name="html_content" class="form-control-file" required>
             </div>
             <div class="form-group">
                 <label for="csv_file">CSV File Upload</label>
@@ -57,7 +57,7 @@
             </div>
             <div class="form-group">
                 <label for="reply_address">Reply-to Address</label>
-                <input type="email" id="reply_address" name="reply_address" class="form-control" placeholder="Enter the replyTo address" oninput="localStorage.setItem('reply_address', this.value);" required> 
+                <input type="email" id="reply_address" name="reply_to_address" class="form-control" placeholder="Enter the replyTo address" oninput="localStorage.setItem('reply_address', this.value);" required> 
             </div>
             <div class="form-group">
                 <label for="num_threads">Number of Threads</label>
@@ -199,6 +199,16 @@
 				localStorage.setItem('connection_string', document.getElementById('connection_string').value);
 			});
 		});
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
+
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+    
+        socket.on('update_logs', function(data) {
+            // Update the logs textarea with the received logs
+            document.getElementById('output_log').value = data.logs.join('\n');
+        });
     </script>
 <footer>
     <div class="container">
