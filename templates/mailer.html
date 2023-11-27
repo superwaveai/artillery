@@ -38,7 +38,7 @@
 <body>
     <div class="container mt-5">
         <h1 class="mb-4"><b>Superwave Artillery</b></h1>
-        <form id="email_form" action="/" method="post" enctype="multipart/form-data">
+        <form id="email_form" onsubmit="submitForm(event);" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="sender_address">Sender Address</label>
                 <input type="email" id="sender_address" name="sender_address" class="form-control" placeholder="Enter your sender MailFrom address" oninput="localStorage.setItem('sender_address', this.value);" required> 
@@ -201,7 +201,32 @@
 		});
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
-
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+    
+            // Your existing form data retrieval code here
+    
+            // Create a FormData object to store form data
+            var formData = new FormData(document.getElementById('email_form'));
+    
+            // Use the fetch API to send an asynchronous POST request
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data as needed
+                console.log('Response:', data);
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('Error:', error);
+            });
+        }
+    </script>
+    
     <script>
         var socket = io.connect('http://' + document.domain + ':' + location.port);
     
